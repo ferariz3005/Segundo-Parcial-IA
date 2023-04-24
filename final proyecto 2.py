@@ -141,14 +141,136 @@ def Haversine_heuristic(goal):
 
     return(haversine_heuristic)
 
+#################################################################################################################3
+def primero_voraz(tree,start,goal,heuristica):
+  path = [start]
 
+  if start == goal:
+    return path
 
+  while True:
+    nodo_actual = path[-1]
+    print("el nodo actual es ", nodo_actual)
+    hijos = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == nodo_actual]
+    
 
+    print("la lista de hijos es ", hijos)
+
+    hijos_con_h = []
+    
+    for hijos0 in hijos:
+          for hijo in hijos0:
+            print(hijo)
+            valor_h = heuristica[hijo[0]]
+            hijos_con_h.append((hijo[0],valor_h))
+
+    print("lod hijos con h son ", hijos_con_h)
+        
+    valor_minimo=hijos_con_h[0]
+    for hijo in hijos_con_h:
+       if hijo[1]<valor_minimo[1]:
+          valor_minimo=hijo
+
+    print("el valor minimo de los hijos con h es ", valor_minimo)
+
+    path.append(valor_minimo[0])
+
+    print("el camino so far es ", path)
+    print("\n")
+
+    if path[-1] == goal:
+         return path
+    
+###################################################################################################################################
+    
+def A_search(tree,start,goal,heuristica):
+  path = [start]
+
+  if start == goal:
+    return path
+
+  while True:
+    nodo_actual = path[-1]
+    print("el nodo actual es ", nodo_actual)
+    hijos = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == nodo_actual]
+    
+
+    print("la lista de hijos es ", hijos)
+
+    hijos_con_h = []
+    
+    for hijos0 in hijos:
+          for hijo in hijos0:
+            print(hijo)
+            valor_h = heuristica[hijo[0]]
+            valor_f=hijo[1]+valor_h
+            hijos_con_h.append((hijo[0],valor_f))
+
+    print("lod hijos con h son ", hijos_con_h)
+        
+    valor_minimo=hijos_con_h[0]
+    for hijo in hijos_con_h:
+       if hijo[1]<=valor_minimo[1]:
+          valor_minimo=hijo
+
+    print("el valor minimo de los hijos con h es ", valor_minimo)
+
+    path.append(valor_minimo[0])
+
+    print("el camino so far es ", path)
+    print("\n")
+
+    if path[-1] == goal:
+         return path
+
+#############################################################################################################################3
+
+def weighted_A_search(tree,start,goal,heuristica):
+  path = [start]
+
+  if start == goal:
+    return path
+
+  while True:
+    nodo_actual = path[-1]
+    print("el nodo actual es ", nodo_actual)
+    hijos = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == nodo_actual]
+    
+
+    print("la lista de hijos es ", hijos)
+
+    hijos_con_h = []
+    
+    for hijos0 in hijos:
+          for hijo in hijos0:
+            print(hijo)
+            valor_h = heuristica[hijo[0]]
+            valor_f=hijo[1]+(1.3*valor_h)
+            hijos_con_h.append((hijo[0],valor_f))
+
+    print("lod hijos con h son ", hijos_con_h)
+        
+    valor_minimo=hijos_con_h[0]
+    for hijo in hijos_con_h:
+       if hijo[1]<=valor_minimo[1]:
+          valor_minimo=hijo
+
+    print("el valor minimo de los hijos con h es ", valor_minimo)
+
+    path.append(valor_minimo[0])
+
+    print("el camino so far es ", path)
+    print("\n")
+
+    if path[-1] == goal:
+         return path
 
 
 #############################################################################################################
+treecp=[['CANCUN', [('VALLADOLID', 90), ('FELIPE CARRILLO PUERTO', 100)]], ['VALLADOLID', [('FELIPE CARRILLO PUERTO', 90)]], ['FELIPE CARRILLO PUERTO', [('CAMPECHE', 60)]], ['CAMPECHE', [('MERIDA', 90), ('CIUDAD DEL CARMEN', 90), ('CHETUMAL', 100)]], ['CIUDAD DEL CARMEN', [('VILLAHERMOSA', 90), ('TUXTLA', 90)]], ['CHETUMAL', [('FRANCISCO ESCARCEGA', 90)]], ['VILLAHERMOSA', [('ACAYUCAN', 90)]], ['TUXTLA', [('ACAYUCAN', 90)]], ['ACAYUCAN', [('TEHUANTEPEC', 80), ('ALVARADO', 110)]], ['ALVARADO', [('OAXACA', 100)]], ['OAXACA', [('PUERTO ANGEL', 90), ('IZUCAR DE MATAMOROS', 90), ('TEHUACAN', 80)]], ['PUERTO ANGEL', [('PINOTEPA NACIONAL', 100)]], ['IZUCAR DE MATAMOROS', [('CUERNAVACA', 100), ('PUEBLA', 90)]], ['PINOTEPA NACIONAL', [('ACAPULCO', 100)]], ['CUERNAVACA', [('CIUDAD DE MEXICO', 100), ('IGUALA', 100), ('CIUDAD ALTAMIRANO', 100)]], ['PUEBLA', [('CIUDAD DE MEXICO', 90), ('CORDOBA', 80)]], ['ACAPULCO', [('CHILPANCINGO', 140)]], ['CIUDAD DE MEXICO', [('TLAXCALA', 100), ('PACHUCA DE SOTO', 100), ('QUERETARO', 90), ('TOLUCA DE LERDO', 110)]], ['CIUDAD ALTAMIRANO', [('ZIHUATANEJO', 90)]], ['CORDOBA', [('VERACRUZ', 90)]], ['CHILPANCINGO', [('IGUALA', 90)]], ['PACHUCA DE SOTO', [('TUXPAN DE RODRIGUEZ CANO', 110)]], ['QUERETARO', [('ATLACOMULCO', 90), ('SALAMANCA', 90), ('SAN LUIS POTOSI', 90)]], ['TOLUCA DE LERDO', [('CIUDAD ALTAMIRANO', 100)]], ['ZIHUATANEJO', [('PLAYA AZUL', 90)]], ['TUXPAN DE RODRIGUEZ CANO', [('TAMPICO', 80)]], ['SALAMANCA', [('GUANAJUATO', 90), ('MORELIA', 90), ('GUADALAJARA', 90)]], ['SAN LUIS POTOSI', [('AGUASCALIENTES', 100), ('ZACATECAS', 90), ('DURANGO', 70)]], ['PLAYA AZUL', [('COLIMA', 100), ('MANZANILLO', 100)]], ['TAMPICO', [('CIUDAD VICTORIA', 80)]], ['GUANAJUATO', [('AGUASCALIENTES', 80)]], ['GUADALAJARA', [('TEPIC', 110)]], ['AGUASCALIENTES', [('GUADALAJARA', 70)]], ['DURANGO', [('HIDALGO DEL PARRAL', 90), ('MAZATLAN', 90)]], ['COLIMA', [('GUADALAJARA', 50), ('MANZANILLO', 50)]], ['MANZANILLO', [('GUADALAJARA', 80)]], ['CIUDAD VICTORIA', [('DURANGO', 80), ('SOTO LA MARINA', 80), ('MATAMOROS', 80), ('MONTERREY', 80)]], ['TEPIC', [('MAZATLAN', 110)]], ['HIDALGO DEL PARRAL', [('CHIHUAHUA', 130), ('TOPOLOBAMPO', 110), ('CULIACAN', 80)]], ['MAZATLAN', [('CULIACAN', 90)]], ['MATAMOROS', [('REYNOSA', 90)]], ['MONTERREY', [('MONCLOVA', 70)]], ['CHIHUAHUA', [('CIUDAD JUAREZ', 90), ('JANOS', 90)]], ['TOPOLOBAMPO', [('CIUDAD OBREGON', 90)]], ['CULIACAN', [('TOPOLOBAMPO', 110)]], ['REYNOSA', [('NUEVO LAREDO', 90)]], ['MONCLOVA', [('TORREON', 110), ('OJINAGA', 110)]], ['JANOS', [('AGUA PRIETA', 110)]], ['CIUDAD OBREGON', [('GUAYMAS', 80)]], ['TORREON', [('DURANGO', 110)]], ['OJINAGA', [('CHIHUAHUA', 90)]], ['NUEVO LAREDO', [('MONTERREY', 110), ('PIEDRAS NEGRAS', 100)]], ['AGUA PRIETA', [('SANTA ANA', 110)]], ['GUAYMAS', [('HERMOSILLO', 80)]], ['PIEDRAS NEGRAS', [('MONCLOVA', 100)]], ['SANTA ANA', [('MEXICALI', 150)]], ['HERMOSILLO', [('SANTA ANA', 60)]], ['MEXICALI', [('TIJUANA', 110), ('SAN FELIPE', 70)]], ['TIJUANA', [('ENSENADA', 50)]], ['SAN FELIPE', [('ENSENADA', 50)]], ['ENSENADA', [('SAN QUINTIN', 60)]], ['SAN QUINTIN', [('SANTA ROSALIA', 60)]], ['SANTA ROSALIA', [('SANTO DOMINGO', 60)]], ['SANTO DOMINGO', [('LA PAZ', 70)]], ['LA PAZ', [('CABO SAN LUCAS', 70)]]]
+
 def main():
-    ciudades = ['CANCUN','VALLADOLID','FELIPE CARRILLO PUERTO','CAMPECHE','MERIDA','CIUDAD DEL CARMEN','CHETUMAL','VILLAHERMOSA','TUXTLA','FRANCISCO ESCARCEGA','ACAYUCAN', 'TEHUANTEPEC','ALVARADO','OAXACA','PUERTO ANGEL','IZUCAR DE MATAMOROS','TEHUACAN','PINOTEPA NACIONAL','CUERNAVACA','PUEBLA','ACAPULCO','CIUDAD DE MEXICO','IGUALA','CIUDAD ALTAMIRANO','CORDOBA','CHILPANCINGO','TLAXCALA','PACHUCA DE SOTO','QUERETARO','TOLUCA DE LERDO','ZIHUATANEJO','VERACRUZ','TUXPAN DE RODRIGUEZ CANO','ATLACOMULCO','SALAMANCA','SAN LUIS POTOSI','PLAYA AZUL','TAMPICO','GUANAJUATO','MORELIA','GUADALAJARA','AGUASCALIENTES','ZACATECAS','DURANGO','COLIMA','MANZANILLO','CIUDAD VICTORIA','TEPIC','HIDALGO DEL PARRAL','MAZATLAN','SOTO LA MARINA','MATAMOROS','MONTERREY','CHIHUAHUA','TOPOLOBAMPO','CULIACAN','REYNOSA','MONCLOVA','CIUDAD JUAREZ','JANOS','CIUDAD OBREGON','TORREON','OJINAGA','NUEVO LAREDO','AGUA PRIETA','GUAYMAS','PIEDRAS NEGRAS','SANTA ANA','HERMOSILLO','MEXICALLI','TIJUANA','SAN FELIPE','ENSENADA','SAN QUINTIN','SANTA ROSALIA','SANTO DOMINGO','LA PAZ','CABO SAN LUCAS']
+    ciudades = ['CANCUN','VALLADOLID','FELIPE CARRILLO PUERTO','CAMPECHE','MERIDA','CIUDAD DEL CARMEN','CHETUMAL','VILLAHERMOSA','TUXTLA','FRANCISCO ESCARCEGA','ACAYUCAN', 'TEHUANTEPEC','ALVARADO','OAXACA','PUERTO ANGEL','IZUCAR DE MATAMOROS','TEHUACAN','PINOTEPA NACIONAL','CUERNAVACA','PUEBLA','ACAPULCO','CIUDAD DE MEXICO','IGUALA','CIUDAD ALTAMIRANO','CORDOBA','CHILPANCINGO','TLAXCALA','PACHUCA DE SOTO','QUERETARO','TOLUCA DE LERDO','ZIHUATANEJO','VERACRUZ','TUXPAN DE RODRIGUEZ CANO','ATLACOMULCO','SALAMANCA','SAN LUIS POTOSI','PLAYA AZUL','TAMPICO','GUANAJUATO','MORELIA','GUADALAJARA','AGUASCALIENTES','ZACATECAS','DURANGO','COLIMA','MANZANILLO','CIUDAD VICTORIA','TEPIC','HIDALGO DEL PARRAL','MAZATLAN','SOTO LA MARINA','MATAMOROS','MONTERREY','CHIHUAHUA','TOPOLOBAMPO','CULIACAN','REYNOSA','MONCLOVA','CIUDAD JUAREZ','JANOS','CIUDAD OBREGON','TORREON','OJINAGA','NUEVO LAREDO','AGUA PRIETA','GUAYMAS','PIEDRAS NEGRAS','SANTA ANA','HERMOSILLO','MEXICALI','TIJUANA','SAN FELIPE','ENSENADA','SAN QUINTIN','SANTA ROSALIA','SANTO DOMINGO','LA PAZ','CABO SAN LUCAS']
     start='p'
     goal='c'
     
@@ -178,17 +300,17 @@ def menu(start,goal):
                     
         if opc==1:
             print("\nGreedy Best-First: ")
-            result1 = breadth_first_search(treeusp, start, goal)
+            result1 = primero_voraz(treecp, start, goal,Goal_hsh)
             print('\nThe path from {} to {} is {}\n'.format(start, goal, result1))
 
         if opc==2:
             print("\nA* Search:: ")
-            parsed_tree = dijkstra_search(treeucp, start, goal)
+            parsed_tree = A_search(treecp, start, goal,Goal_hsh)
             print_result(start, goal, parsed_tree)
                 
         if opc==3:
             print("\nWeighted A* Search: ")
-            result = dfs(treeusp, start, goal)
+            result = weighted_A_search(treecp, start, goal,Goal_hsh)
             print('\nThe path from {} to {} is {}\n'.format(start, goal, result))
 
             
@@ -222,6 +344,4 @@ def menu(start,goal):
             break
         else:
             print('Favor de seleccionar una opción válida.')
-    
-
     

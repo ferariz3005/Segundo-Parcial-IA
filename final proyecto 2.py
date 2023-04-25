@@ -1,5 +1,5 @@
 """
-PROYECTO SEGUNDO PARCIAL
+PROYECTO SEGUNDO PARCIAL: ALGORITMOS DE BÚSQUEDA INFORMADOS
 UNIVERSIDAD PANAMERICANA
     MATERIA: INTELIGENCIA ARTIFICIAL
 
@@ -10,9 +10,9 @@ INTREGRANTES:
 
 Fecha de entrega:26 de abril 2023
 
-En este codigo, se realizará la implementación de los algoritmos de búsqueda
+En este código, se realizará la implementación de los algoritmos de búsqueda
 vistos en clase haciendo uso del grafo de las ciudades de México y la heurística
-Haversind. 
+Haversine. 
 
 Ejecucion del programa
     Opcion 1) En una terminal que sobre el directorio donde radica este archivo escribir:
@@ -20,9 +20,16 @@ Ejecucion del programa
     Opcion 2) Abrir el archivo con un editor de codigo y presionar el boton ejecutar
 """
 ####################################################################################################################################
+#Dependencias: 
 import math
 from math import radians, cos, sin, asin, sqrt
+import time 
 
+#############################################################################################################################################
+##### Variables Globales #####
+
+# Diccionario con el nombre de las ciudades contenidas en el grafo y sus correspondientes coordenadas
+# geograficas en formato de latitud y longitud
 cities_coordinates = {
     'CANCUN': (21.1213285, -86.9192738)
     , 'VALLADOLID': (20.688114, -88.2204456)
@@ -104,6 +111,16 @@ cities_coordinates = {
     , 'CABO SAN LUCAS': (22.8962253, -109.9505077)
 }
 
+##### Funciones o Clases de Apoyo #####
+
+# Calcula la distancia euclideana entre dos ciudades por medio de las coordenas geograficas
+
+# Entrada:
+    # origin = tupla que contiene la latitud y longitud de la ciudad de origen
+    # goal = tupla que contiene la latitud y longitud de la ciudad destino
+
+# Salida:
+    #regresa el valor numerico de la distancia euclideana redondeado
 def haversine(origin, goal):
     lat1 = cities_coordinates[origin][0]
     lon1 = cities_coordinates[origin][1]
@@ -122,6 +139,14 @@ def haversine(origin, goal):
 
     return R * c
 
+# Función: Heurística de Haversine: Calcula la heuristica para una ciudad objetivo
+
+# Entrada:
+    # goal = nombre de la ciudad objetivo
+
+# Salida:
+    # Regresa un diccionario con los valores numericos de la heuristica para la ciudad objetivo
+    # introducida por el usuario
 def Haversine_heuristic(goal):
     # Estandarizamos el nombre de la ciudad objetivo para poder realizar la llamada de la función: 'haversine'
     goal_city = goal.upper()
@@ -141,125 +166,211 @@ def Haversine_heuristic(goal):
 
     return(haversine_heuristic)
 
-#################################################################################################################3
-def primero_voraz(tree,start,goal,heuristica):
+
+#################################################################################################################
+#Responsable: 
+#Función: "Primero Voraz", calcula el camino entre dos ciudades con la heuristica de Haversine yendo siempre por el valor
+#más bajo de la misma
+
+#Entradas: 
+    #-tree: arbol
+    #-start: ciudad de inicio
+    #-goal: ciudad objetivo
+    #-heuristica: diccionario con la heuristica calculada para nuestra ciudad obejtivo
+
+#Salida: 
+    # "path" nos devuelve una lista que contiene el camino desde nuestra ciudad de inicio a nuestra ciudad objetivo
+def primero_voraz(tree,start,goal,heuristica,bandera):
+  start_time = time.time()
   path = [start]
 
+    #Si nuestra ciudad de inicio es igual a nuestro destino, nos devuelve el camino con la ciudad de inicio
   if start == goal:
-    return path
+    end_time = time.time()
+    tiempo=start_time-end_time
+    return path, tiempo
 
   while True:
+    #nuestro nodo actual siempre será el último de nuestro camino
     nodo_actual = path[-1]
-    print("el nodo actual es ", nodo_actual)
+    if bandera==1:
+        print("el nodo actual es ", nodo_actual)
+   
+    #Hacemos una lista con los hijos de nuestro nodo actual para poder explorarlos
     hijos = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == nodo_actual]
     
-
-    print("la lista de hijos es ", hijos)
+    if bandera==1:
+        print("la lista de hijos es ", hijos)
 
     hijos_con_h = []
     
+    #cambiamos los pesos de nuestro hijos por los valores de nuestra heurística
     for hijos0 in hijos:
           for hijo in hijos0:
-            print(hijo)
-            valor_h = heuristica[hijo[0]]
-            hijos_con_h.append((hijo[0],valor_h))
+                if bandera==1:
+                    print(hijo)
+                valor_h = heuristica[hijo[0]]
+                hijos_con_h.append((hijo[0],valor_h))
 
-    print("lod hijos con h son ", hijos_con_h)
+    if bandera==1:
+        print("los hijos con heurística son ", hijos_con_h)
         
+    #ordena los hijos con los nuevos valores de la heurística y elije el de valor mínimo
     valor_minimo=hijos_con_h[0]
     for hijo in hijos_con_h:
        if hijo[1]<valor_minimo[1]:
           valor_minimo=hijo
 
-    print("el valor minimo de los hijos con h es ", valor_minimo)
+    if bandera==1:
+        print("el valor minimo de los hijos con h es ", valor_minimo)
 
+    #agrega a nuestro camino el hijo de valor minimo pues es el que está más cerca de nuestro destino
     path.append(valor_minimo[0])
 
-    print("el camino so far es ", path)
+    if bandera==1:
+        print("El camino hasta ahora es ", path)
+
     print("\n")
 
     if path[-1] == goal:
-         return path
+        end_time = time.time()
+        tiempo=start_time-end_time
+        return path, tiempo
+    
+    
     
 ###################################################################################################################################
-    
-def A_search(tree,start,goal,heuristica):
-  path = [start]
+#Responsable: 
+#Función: "A* search", calcula el camino entre dos ciudades con la heuristica de Haversine yendo siempre por el valor
+#más bajo de los pesos entre las ciudades más el valor de la heuristica para la ciudad objetivo
 
+#Entradas: 
+    #-tree: arbol
+    #-start: ciudad de inicio
+    #-goal: ciudad objetivo
+    #-heuristica: diccionario con la heuristica calculada para nuestra ciudad obejtivo
+
+#Salida: 
+    # "path" nos devuelve una lista que contiene el camino desde nuestra ciudad de inicio a nuestra ciudad objetivo
+    
+def A_search(tree,start,goal,heuristica, bandera):
+  path = [start]
+    #Si nuestra ciudad de inicio es igual a nuestro destino, nos devuelve el camino con la ciudad de inicio
   if start == goal:
     return path
 
   while True:
+    #nuestro nodo actual siempre será el último de nuestro camino
     nodo_actual = path[-1]
-    print("el nodo actual es ", nodo_actual)
+
+    if bandera==1:
+        print("el nodo actual es ", nodo_actual)
+
+    #Hacemos una lista con los hijos de nuestro nodo actual para poder explorarlos
     hijos = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == nodo_actual]
     
 
-    print("la lista de hijos es ", hijos)
+    if bandera==1:
+        print("la lista de hijos es ", hijos)
 
     hijos_con_h = []
     
+    #cambiamos los pesos de nuestro hijos por los valores originales más los 
+    # de nuestra heurística 
     for hijos0 in hijos:
           for hijo in hijos0:
-            print(hijo)
+            if bandera==1:
+                    print(hijo)
             valor_h = heuristica[hijo[0]]
             valor_f=hijo[1]+valor_h
             hijos_con_h.append((hijo[0],valor_f))
 
-    print("lod hijos con h son ", hijos_con_h)
+    if bandera==1:
+        print("los hijos con heurística son ", hijos_con_h)
         
+    #ordena los hijos con los nuevos valores de la heurística y elije el de valor mínimo
     valor_minimo=hijos_con_h[0]
     for hijo in hijos_con_h:
        if hijo[1]<=valor_minimo[1]:
           valor_minimo=hijo
 
-    print("el valor minimo de los hijos con h es ", valor_minimo)
+    if bandera==1:
+        print("el valor minimo de los hijos con heurística es ", valor_minimo)
 
+    #agrega a nuestro camino el hijo de valor minimo pues es el que está más cerca de nuestro destino
     path.append(valor_minimo[0])
 
-    print("el camino so far es ", path)
+    if bandera==1:
+        print("el camino hasta ahora es ", path)
     print("\n")
 
     if path[-1] == goal:
          return path
 
 #############################################################################################################################3
+#Responsable: 
+#Función: "Weighted A* search", calcula el camino entre dos ciudades con la heuristica de Haversine yendo siempre por el valor
+#más bajo de los pesos entre las ciudades más el valor de la heuristica para la ciudad objetivo considerando nuestro 
+#índice de desvío 
 
-def weighted_A_search(tree,start,goal,heuristica):
+#Entradas: 
+    #-tree: arbol
+    #-start: ciudad de inicio
+    #-goal: ciudad objetivo
+    #-heuristica: diccionario con la heuristica calculada para nuestra ciudad obejtivo
+
+#Salida: 
+    # "path" nos devuelve una lista que contiene el camino desde nuestra ciudad de inicio a nuestra ciudad objetivo
+    
+def weighted_A_search(tree,start,goal,heuristica,bandera):
   path = [start]
 
+  #Si nuestra ciudad de inicio es igual a nuestro destino, nos devuelve el camino con la ciudad de inicio
   if start == goal:
     return path
 
   while True:
+    #nuestro nodo actual siempre será el último de nuestro camino
     nodo_actual = path[-1]
-    print("el nodo actual es ", nodo_actual)
+    if bandera==1:
+        print("el nodo actual es ", nodo_actual)
+
+    #Hacemos una lista con los hijos de nuestro nodo actual para poder explorarlos
     hijos = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == nodo_actual]
     
 
-    print("la lista de hijos es ", hijos)
+    if bandera==1:
+        print("la lista de hijos es ", hijos)
 
     hijos_con_h = []
     
+    #cambiamos los pesos de nuestro hijos por los valores originales más los 
+    # de nuestra heurística considerando el índice de desvío
     for hijos0 in hijos:
           for hijo in hijos0:
-            print(hijo)
+            if bandera==1:
+                    print(hijo)
             valor_h = heuristica[hijo[0]]
             valor_f=hijo[1]+(1.3*valor_h)
             hijos_con_h.append((hijo[0],valor_f))
 
-    print("lod hijos con h son ", hijos_con_h)
-        
+    if bandera==1:
+        print("los hijos con heurística son ", hijos_con_h)
+
+    #ordena los hijos con los nuevos valores de la heurística y elije el de valor mínimo
     valor_minimo=hijos_con_h[0]
     for hijo in hijos_con_h:
        if hijo[1]<=valor_minimo[1]:
           valor_minimo=hijo
 
-    print("el valor minimo de los hijos con h es ", valor_minimo)
+    if bandera==1:
+        print("el valor minimo de los hijos con h es ", valor_minimo)
 
+    #agrega a nuestro camino el hijo de valor minimo pues es el que está más cerca de nuestro destino    
     path.append(valor_minimo[0])
 
-    print("el camino so far es ", path)
+    if bandera==1:
+        print("el camino hasta ahora es ", path)
     print("\n")
 
     if path[-1] == goal:
@@ -269,20 +380,39 @@ def weighted_A_search(tree,start,goal,heuristica):
 #############################################################################################################
 treecp=[['CANCUN', [('VALLADOLID', 90), ('FELIPE CARRILLO PUERTO', 100)]], ['VALLADOLID', [('FELIPE CARRILLO PUERTO', 90)]], ['FELIPE CARRILLO PUERTO', [('CAMPECHE', 60)]], ['CAMPECHE', [('MERIDA', 90), ('CIUDAD DEL CARMEN', 90), ('CHETUMAL', 100)]], ['CIUDAD DEL CARMEN', [('VILLAHERMOSA', 90), ('TUXTLA', 90)]], ['CHETUMAL', [('FRANCISCO ESCARCEGA', 90)]], ['VILLAHERMOSA', [('ACAYUCAN', 90)]], ['TUXTLA', [('ACAYUCAN', 90)]], ['ACAYUCAN', [('TEHUANTEPEC', 80), ('ALVARADO', 110)]], ['ALVARADO', [('OAXACA', 100)]], ['OAXACA', [('PUERTO ANGEL', 90), ('IZUCAR DE MATAMOROS', 90), ('TEHUACAN', 80)]], ['PUERTO ANGEL', [('PINOTEPA NACIONAL', 100)]], ['IZUCAR DE MATAMOROS', [('CUERNAVACA', 100), ('PUEBLA', 90)]], ['PINOTEPA NACIONAL', [('ACAPULCO', 100)]], ['CUERNAVACA', [('CIUDAD DE MEXICO', 100), ('IGUALA', 100), ('CIUDAD ALTAMIRANO', 100)]], ['PUEBLA', [('CIUDAD DE MEXICO', 90), ('CORDOBA', 80)]], ['ACAPULCO', [('CHILPANCINGO', 140)]], ['CIUDAD DE MEXICO', [('TLAXCALA', 100), ('PACHUCA DE SOTO', 100), ('QUERETARO', 90), ('TOLUCA DE LERDO', 110)]], ['CIUDAD ALTAMIRANO', [('ZIHUATANEJO', 90)]], ['CORDOBA', [('VERACRUZ', 90)]], ['CHILPANCINGO', [('IGUALA', 90)]], ['PACHUCA DE SOTO', [('TUXPAN DE RODRIGUEZ CANO', 110)]], ['QUERETARO', [('ATLACOMULCO', 90), ('SALAMANCA', 90), ('SAN LUIS POTOSI', 90)]], ['TOLUCA DE LERDO', [('CIUDAD ALTAMIRANO', 100)]], ['ZIHUATANEJO', [('PLAYA AZUL', 90)]], ['TUXPAN DE RODRIGUEZ CANO', [('TAMPICO', 80)]], ['SALAMANCA', [('GUANAJUATO', 90), ('MORELIA', 90), ('GUADALAJARA', 90)]], ['SAN LUIS POTOSI', [('AGUASCALIENTES', 100), ('ZACATECAS', 90), ('DURANGO', 70)]], ['PLAYA AZUL', [('COLIMA', 100), ('MANZANILLO', 100)]], ['TAMPICO', [('CIUDAD VICTORIA', 80)]], ['GUANAJUATO', [('AGUASCALIENTES', 80)]], ['GUADALAJARA', [('TEPIC', 110)]], ['AGUASCALIENTES', [('GUADALAJARA', 70)]], ['DURANGO', [('HIDALGO DEL PARRAL', 90), ('MAZATLAN', 90)]], ['COLIMA', [('GUADALAJARA', 50), ('MANZANILLO', 50)]], ['MANZANILLO', [('GUADALAJARA', 80)]], ['CIUDAD VICTORIA', [('DURANGO', 80), ('SOTO LA MARINA', 80), ('MATAMOROS', 80), ('MONTERREY', 80)]], ['TEPIC', [('MAZATLAN', 110)]], ['HIDALGO DEL PARRAL', [('CHIHUAHUA', 130), ('TOPOLOBAMPO', 110), ('CULIACAN', 80)]], ['MAZATLAN', [('CULIACAN', 90)]], ['MATAMOROS', [('REYNOSA', 90)]], ['MONTERREY', [('MONCLOVA', 70)]], ['CHIHUAHUA', [('CIUDAD JUAREZ', 90), ('JANOS', 90)]], ['TOPOLOBAMPO', [('CIUDAD OBREGON', 90)]], ['CULIACAN', [('TOPOLOBAMPO', 110)]], ['REYNOSA', [('NUEVO LAREDO', 90)]], ['MONCLOVA', [('TORREON', 110), ('OJINAGA', 110)]], ['JANOS', [('AGUA PRIETA', 110)]], ['CIUDAD OBREGON', [('GUAYMAS', 80)]], ['TORREON', [('DURANGO', 110)]], ['OJINAGA', [('CHIHUAHUA', 90)]], ['NUEVO LAREDO', [('MONTERREY', 110), ('PIEDRAS NEGRAS', 100)]], ['AGUA PRIETA', [('SANTA ANA', 110)]], ['GUAYMAS', [('HERMOSILLO', 80)]], ['PIEDRAS NEGRAS', [('MONCLOVA', 100)]], ['SANTA ANA', [('MEXICALI', 150)]], ['HERMOSILLO', [('SANTA ANA', 60)]], ['MEXICALI', [('TIJUANA', 110), ('SAN FELIPE', 70)]], ['TIJUANA', [('ENSENADA', 50)]], ['SAN FELIPE', [('ENSENADA', 50)]], ['ENSENADA', [('SAN QUINTIN', 60)]], ['SAN QUINTIN', [('SANTA ROSALIA', 60)]], ['SANTA ROSALIA', [('SANTO DOMINGO', 60)]], ['SANTO DOMINGO', [('LA PAZ', 70)]], ['LA PAZ', [('CABO SAN LUCAS', 70)]]]
 
+########################################################################################################################################
+#######FUNCIONES PRINCIPALES##########
+#Esta función es la encargada de pedirle al usuario la ciudad de incio y la ciudad objetivo. También realiza una 
+#validación para que las ciudades estén dentro de las ciudades permitidas.
+
+#Entreda
+    #No necesita parametros de entrada 
+
+#Salida:
+    #No regresa nada 
+#Responsable: 
+
 def main():
     ciudades = ['CANCUN','VALLADOLID','FELIPE CARRILLO PUERTO','CAMPECHE','MERIDA','CIUDAD DEL CARMEN','CHETUMAL','VILLAHERMOSA','TUXTLA','FRANCISCO ESCARCEGA','ACAYUCAN', 'TEHUANTEPEC','ALVARADO','OAXACA','PUERTO ANGEL','IZUCAR DE MATAMOROS','TEHUACAN','PINOTEPA NACIONAL','CUERNAVACA','PUEBLA','ACAPULCO','CIUDAD DE MEXICO','IGUALA','CIUDAD ALTAMIRANO','CORDOBA','CHILPANCINGO','TLAXCALA','PACHUCA DE SOTO','QUERETARO','TOLUCA DE LERDO','ZIHUATANEJO','VERACRUZ','TUXPAN DE RODRIGUEZ CANO','ATLACOMULCO','SALAMANCA','SAN LUIS POTOSI','PLAYA AZUL','TAMPICO','GUANAJUATO','MORELIA','GUADALAJARA','AGUASCALIENTES','ZACATECAS','DURANGO','COLIMA','MANZANILLO','CIUDAD VICTORIA','TEPIC','HIDALGO DEL PARRAL','MAZATLAN','SOTO LA MARINA','MATAMOROS','MONTERREY','CHIHUAHUA','TOPOLOBAMPO','CULIACAN','REYNOSA','MONCLOVA','CIUDAD JUAREZ','JANOS','CIUDAD OBREGON','TORREON','OJINAGA','NUEVO LAREDO','AGUA PRIETA','GUAYMAS','PIEDRAS NEGRAS','SANTA ANA','HERMOSILLO','MEXICALI','TIJUANA','SAN FELIPE','ENSENADA','SAN QUINTIN','SANTA ROSALIA','SANTO DOMINGO','LA PAZ','CABO SAN LUCAS']
     start='p'
     goal='c'
+    bandera=-1
     
     while start not in ciudades:
         start=input("Ingrese la ciudad desde la que desea iniciar su búsqueda: ").upper()
     
     while goal not in ciudades:
         goal=input("Ingrese la ciudad a la que desea llegar: ").upper()
- 
 
-def menu(start,goal):
+    while bandera!=1 and bandera!=0:
+        bandera=int(input("Si quiere la información paso a paso presione 1, si no, presione 0: "))
+
+    menu(start,goal,bandera)
+ 
+#Responsable: 
+def menu(start,goal,bandera):
     Goal_hsh=Haversine_heuristic(goal)
+    opc=-1
 
     while True:
         print('\n\t\tProyecto Segundo parcial')
@@ -290,58 +420,56 @@ def menu(start,goal):
         print('\t2. A* Search:')
         print('\t3. Weighted A* Search:')
         print('\t4. Beam Search:')
-        print('\t5. Hill Climbing')
-        print('\t6. Stochastic hill cllimbing: ')
-        print('\t7. Steepest hill cllimbing: ')
-        print('\t8. Simulated annealing: ')
-        print('\t9. Salir')
-        opc = int(input('\tDe la opción de la búsqueda que desea realizar: '))
-        print("\n")
-                    
+        print('\t5. Stochastic hill cllimbing: ')
+        print('\t6. Steepest hill cllimbing: ')
+        print('\t7. Simulated annealing: ')
+        print('\t8. Salir')
+        opc = int(input('\n\tDe la opción de la búsqueda que desea realizar: '))
+        
+                            
         if opc==1:
             print("\nGreedy Best-First: ")
-            result1 = primero_voraz(treecp, start, goal,Goal_hsh)
+            result1 = primero_voraz(treecp, start, goal,Goal_hsh,bandera)
             print('\nThe path from {} to {} is {}\n'.format(start, goal, result1))
 
         if opc==2:
             print("\nA* Search:: ")
-            parsed_tree = A_search(treecp, start, goal,Goal_hsh)
-            print_result(start, goal, parsed_tree)
+            result2 = A_search(treecp, start, goal,Goal_hsh,bandera)
+            print('\nThe path from {} to {} is {}\n'.format(start, goal, result2))
                 
         if opc==3:
             print("\nWeighted A* Search: ")
-            result = weighted_A_search(treecp, start, goal,Goal_hsh)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result))
+            result3 = weighted_A_search(treecp, start, goal,Goal_hsh,bandera)
+            print('\nThe path from {} to {} is {}\n'.format(start, goal, result3))
 
-            
+        """"" 
         if opc==4:
             print("\nBeam Search:: ")
             result = dfs_with_limit(treeusp, start, goal, limit)
             print('\nThe path from {} to {} with a limit of {} is {}\n'.format(start, goal, limit, result))
         
         if opc==5:
-            print("\nHill Climbing: ")
-            result = iterative_dfs(treeusp, start, goal)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result))
-        
-        if opc==6:
             print("\nStochastic  Hill Climbing: ")
             route = bidirectional_search(start, goal)
             print(route)
 
-        if opc==7:
+        if opc==6:
             print("\nSteepest Hill Climbing: ")
             route = bidirectional_search(start, goal)
             print(route)
 
-        if opc==8:
+        if opc==7:
             print("\nSimulated annealing: ")
             route = bidirectional_search(start, goal)
             print(route)
+        """""
                   
-        if opc == 9:
+        if opc == 8:
             print('\nMuchas gracias, hasta luego.')
             break
         else:
             print('Favor de seleccionar una opción válida.')
+    
+
+main()   
     

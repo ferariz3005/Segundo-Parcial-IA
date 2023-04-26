@@ -20,7 +20,7 @@ Ejecución del programa
 import math
 from math import radians, cos, sin, asin, sqrt
 import time 
-import networkx
+import networkx # Hay que revisar que esté instalado. En la terminal poner 'pip list'. Para instalarlo: 'pip install networkx'.
 import random
 
 #############################################################################################################################################

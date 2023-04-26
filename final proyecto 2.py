@@ -2,18 +2,14 @@
 PROYECTO SEGUNDO PARCIAL: ALGORITMOS DE BÚSQUEDA INFORMADOS
 UNIVERSIDAD PANAMERICANA
     MATERIA: INTELIGENCIA ARTIFICIAL
-
 INTREGRANTES:
     Emiliano Bojorquez Robles
     Fernanda Arizbé Torres Martínez
     Jimena Cuevas Sánchez
-
 Fecha de entrega:26 de abril 2023
-
 En este código, se realizará la implementación de los algoritmos de búsqueda
 vistos en clase haciendo uso del grafo de las ciudades de México y la heurística
 Haversine. 
-
 Ejecución del programa
     Opción 1) En una terminal que sobre el directorio donde radica este archivo escribir:
                     python get_euclidean_distance.py
@@ -116,6 +112,7 @@ cities_coordinates = {
 #Arbol con las ciudades de México, sus hijos, conexiones y pesos. 
 treecp=[['CANCUN', [('VALLADOLID', 90), ('FELIPE CARRILLO PUERTO', 100)]], ['VALLADOLID', [('FELIPE CARRILLO PUERTO', 90)]], ['FELIPE CARRILLO PUERTO', [('CAMPECHE', 60)]], ['CAMPECHE', [('MERIDA', 90), ('CIUDAD DEL CARMEN', 90), ('CHETUMAL', 100)]], ['CIUDAD DEL CARMEN', [('VILLAHERMOSA', 90), ('TUXTLA', 90)]], ['CHETUMAL', [('FRANCISCO ESCARCEGA', 90)]], ['VILLAHERMOSA', [('ACAYUCAN', 90)]], ['TUXTLA', [('ACAYUCAN', 90)]], ['ACAYUCAN', [('TEHUANTEPEC', 80), ('ALVARADO', 110)]], ['ALVARADO', [('OAXACA', 100)]], ['OAXACA', [('PUERTO ANGEL', 90), ('IZUCAR DE MATAMOROS', 90), ('TEHUACAN', 80)]], ['PUERTO ANGEL', [('PINOTEPA NACIONAL', 100)]], ['IZUCAR DE MATAMOROS', [('CUERNAVACA', 100), ('PUEBLA', 90)]], ['PINOTEPA NACIONAL', [('ACAPULCO', 100)]], ['CUERNAVACA', [('CIUDAD DE MEXICO', 100), ('IGUALA', 100), ('CIUDAD ALTAMIRANO', 100)]], ['PUEBLA', [('CIUDAD DE MEXICO', 90), ('CORDOBA', 80)]], ['ACAPULCO', [('CHILPANCINGO', 140)]], ['CIUDAD DE MEXICO', [('TLAXCALA', 100), ('PACHUCA DE SOTO', 100), ('QUERETARO', 90), ('TOLUCA DE LERDO', 110)]], ['CIUDAD ALTAMIRANO', [('ZIHUATANEJO', 90)]], ['CORDOBA', [('VERACRUZ', 90)]], ['IGUALA',[('CIUDAD ALTAMIRANO',110)]],['CHILPANCINGO', [('IGUALA', 90)]], ['PACHUCA DE SOTO', [('TUXPAN DE RODRIGUEZ CANO', 110)]], ['QUERETARO', [('ATLACOMULCO', 90), ('SALAMANCA', 90), ('SAN LUIS POTOSI', 90)]], ['TOLUCA DE LERDO', [('CIUDAD ALTAMIRANO', 100)]], ['ZIHUATANEJO', [('PLAYA AZUL', 90)]], ['TUXPAN DE RODRIGUEZ CANO', [('TAMPICO', 80)]], ['SALAMANCA', [('GUANAJUATO', 90), ('MORELIA', 90), ('GUADALAJARA', 90)]], ['SAN LUIS POTOSI', [('AGUASCALIENTES', 100), ('ZACATECAS', 90), ('DURANGO', 70)]], ['PLAYA AZUL', [('COLIMA', 100), ('MANZANILLO', 100)]], ['TAMPICO', [('CIUDAD VICTORIA', 80)]], ['GUANAJUATO', [('AGUASCALIENTES', 80)]], ['GUADALAJARA', [('TEPIC', 110)]], ['AGUASCALIENTES', [('GUADALAJARA', 70)]], ['DURANGO', [('HIDALGO DEL PARRAL', 90), ('MAZATLAN', 90)]], ['COLIMA', [('GUADALAJARA', 50), ('MANZANILLO', 50)]], ['MANZANILLO', [('GUADALAJARA', 80)]], ['CIUDAD VICTORIA', [('DURANGO', 80), ('SOTO LA MARINA', 80), ('MATAMOROS', 80), ('MONTERREY', 80)]], ['TEPIC', [('MAZATLAN', 110)]], ['HIDALGO DEL PARRAL', [('CHIHUAHUA', 130), ('TOPOLOBAMPO', 110), ('CULIACAN', 80)]], ['MAZATLAN', [('CULIACAN', 90)]], ['MATAMOROS', [('REYNOSA', 90)]], ['MONTERREY', [('MONCLOVA', 70)]], ['CHIHUAHUA', [('CIUDAD JUAREZ', 90), ('JANOS', 90)]], ['TOPOLOBAMPO', [('CIUDAD OBREGON', 90)]], ['CULIACAN', [('TOPOLOBAMPO', 110)]], ['REYNOSA', [('NUEVO LAREDO', 90)]], ['MONCLOVA', [('TORREON', 110), ('OJINAGA', 110)]], ['JANOS', [('AGUA PRIETA', 110)]], ['CIUDAD OBREGON', [('GUAYMAS', 80)]], ['TORREON', [('DURANGO', 110)]], ['OJINAGA', [('CHIHUAHUA', 90)]], ['NUEVO LAREDO', [('MONTERREY', 110), ('PIEDRAS NEGRAS', 100)]], ['AGUA PRIETA', [('SANTA ANA', 110)]], ['GUAYMAS', [('HERMOSILLO', 80)]], ['PIEDRAS NEGRAS', [('MONCLOVA', 100)]], ['SANTA ANA', [('MEXICALI', 150)]], ['HERMOSILLO', [('SANTA ANA', 60)]], ['MEXICALI', [('TIJUANA', 110), ('SAN FELIPE', 70)]], ['TIJUANA', [('ENSENADA', 50)]], ['SAN FELIPE', [('ENSENADA', 50)]], ['ENSENADA', [('SAN QUINTIN', 60)]], ['SAN QUINTIN', [('SANTA ROSALIA', 60)]], ['SANTA ROSALIA', [('SANTO DOMINGO', 60)]], ['SANTO DOMINGO', [('LA PAZ', 70)]], ['LA PAZ', [('CABO SAN LUCAS', 70)]]]
 
+#############################################################################################################################
 ##### Funciones o Clases de Apoyo #####
 
 # Calcula la distancia de haversine entre dos ciudades por medio de las coordenas geograficas
@@ -143,7 +140,7 @@ def haversine(origin, goal):
     c = 2 * asin(sqrt(a))
 
     return R * c
-
+###########################################################################################3
 # Función: Heurística de Haversine: Calcula la heuristica para una ciudad objetivo
 
 # Entrada:
@@ -170,18 +167,43 @@ def Haversine_heuristic(goal):
     # regresa el diccionario con los valores de la heuristica para la ciudad objetivo correspondiente
 
     return(haversine_heuristic)
-
+######################################################################################
 #Función: Sort Tuple, ordena una lista de tuplas en base al segundo elemento de cada tupla, de manera ascendente.
 
 #Entrada:
-    #tup: lista de tuplas que se desea ordenar
+    #tup: lisata de tuplas que se desea ordenar
 
 #Salida:
-    #tup: lista ordenada 
+    #tup: lista ordenada
 def Sort_Tuple(tup):
     tup.sort(key=lambda x: x[1])
     return tup
+
+###################################################################################
+#Función: Approved_n, La función filtra los vecinos que no están presentes en el árbol y devuelve una lista 
+# con los vecinos aprobados.
+
+#Entrada:
+    #neigh_list: una lista de vecinos
+    #tree: arbol
+
+#Salida:
+    #tup: tupla ordenada
+def Approved_n(neigh_list, tree):
+    final_n = []
+
+    for neighbor in neigh_list:
+        current_node = neighbor[0]
+        node_neighbors = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == current_node]
+        if len(node_neighbors) != 0:
+            final_n.append(neighbor)
+
+    return final_n
+
+
 #################################################################################################################
+########################################################################################################################################
+#######FUNCIONES PRINCIPALES##########
 #Responsable: Fer
 #Función: "Primero Voraz", calcula el camino entre dos ciudades con la heuristica de Haversine yendo siempre por el valor
 #más bajo de la misma
@@ -518,10 +540,42 @@ def beam_search(tree, start, goal, beam_width, heuristic,flag):
                 branches.append(updated_branch)
                 if flag==1:
                   print('\nThis is branches: ', branches)
+                
+        # *********************************************************************************************************
+        if flag==1:
+          print("\nThis is 'branches' before restricting it to beam_width :", branches)
+        aux = [possible_path[-1] for possible_path in
+               branches]  # we create a list with the last nodes of all of our possible paths
+        if flag==1:
+          print('\nThese are the last nodes from all possible paths:', aux)
+
+        aux_with_h = []
+        for node in aux:
+            aux_with_h.append((node, heuristic[node]))
+
+        if flag==1:
+          print('\nThis is aux_with_h list:', aux_with_h)
+        sorted_aux_list = Sort_Tuple(aux_with_h)
+        if flag==1:
+          print(f"\nFirst we sort our list: {sorted_aux_list}")
+
+        cool_list = sorted_aux_list[0:beam_width]  # we restrict the number of paths to be explored
+        aux_2 = []
+        for tup in cool_list:
+            aux_2.append(tup[0])
+        if flag==1:
+          print(f"\nThis is the nodes we're interested in, since they've got the lowest heuristic values: {aux_2}")
+        for path in branches:
+            if path[-1] not in aux_2:
+                branches.remove(path)
+
+        if flag==1:
+          print("\nThis is 'branches' after being restricted by beam_width:", branches)
+
 
 #####################################################################################################################################
 #Responsable: Emiliano
-#Función: "Steepest Ascent Hill", es una técnica de búsqueda local que mueve un punto en la dirección del valor 
+#Función: "Steepest Ascent Hill Climber", es una técnica de búsqueda local que mueve un punto en la dirección del valor 
 # más alto de la heuristica en cada iteración, deteniéndose cuando no se puede encontrar una mejor solución en 
 # la vecindad actual. Sin embargo, puede quedar atrapado en óptimos locales y no encontrar el óptimo global.
 
@@ -587,7 +641,7 @@ def Steepest_Ascent_Hill_Climber(tree, start, goal, heuristic, flag):
                         # banned cities, we pick another one (if available)
                         if len(node_weights_list[1]) >= 1:
                             neighbor = node_weights_list[1].pop()
-                         else:
+                        else:
                             return "none since the last reached state has no more neighbors" # si no podemos seleccionar otro hijo a explorar (dado que la lista está vacia),
                             # entonces notificamos al usuario que no ha sido posible encontrar un camino al destino, pues el último nodo explorado no cuenta con hijos que nos permitan
                             # alcanzar el nodo final.
@@ -613,7 +667,121 @@ def Steepest_Ascent_Hill_Climber(tree, start, goal, heuristic, flag):
                               print('\nThis is branches: ', branches)
                             break
 
-#####################################################################################################################################
+###########################################################################################################################
+#Responsable: Emiliano
+#Función: "Stochastic Ascent Hill Climber", busca encontrar la mejor solución a un problema al realizar pequeñas
+# modificaciones aleatorias en la solución actual. Cada modificación es evaluada y si mejora la solución, se mantiene, 
+# de lo contrario se descarta. El proceso se repite hasta encontrar la mejor solución posible.
+
+#Entradas: 
+    #-tree: arbol
+    #-start: ciudad de inicio
+    #-goal: ciudad objetivo
+    #-heuristic: diccionario con la heuristica calculada para nuestra ciudad obejtivo
+    #-bandera: Indicador que nos informa si el usuario pidió mostrar el paso a paso del algoritmo. Si es así, imprime a
+    #lo largo del algoritmo el procedimiento hecho
+
+#Salida: 
+    # "path" nos devuelve una tupla cuyo primer elemento es una lista que contiene el camino desde nuestra ciudad de 
+    # inicio a nuestra ciudad objetivo (si es que lo encontró) y el segundo el tiempo de ejecución del algoritmo
+
+def Stochastic_Hill_Climber(tree, start, goal, heuristic, flag):
+    start_time = time.time()
+    nodes_visited = []
+    branches = [[start]]
+    visited_tuples = []
+
+    while branches:
+        if flag==1:
+            print('----')
+            print('\nBranches available: ', branches)
+        branch = branches.pop()
+        if flag==1:
+            print('\nbranch to explore: ', branch)
+            print('\nnodes visited: ', nodes_visited)
+
+        current_node = branch[-1]
+        if flag==1:
+            print('\ncurrent node ', current_node)
+
+        # checks if the node where we are located is the stop
+        if current_node == goal:
+            end_time = time.time()
+            tiempo=end_time-start_time
+            return branch,tiempo 
+
+        if current_node not in nodes_visited:
+            nodes_visited.append(current_node)
+        if flag==1:
+            print('\nThese are the nodes that have been visited:', nodes_visited)
+
+        neighbors_with_h = []
+        # we get the neighbors of every node as we did in greedy
+        node_neighbors = [node_weights_list[1] for node_weights_list in tree if node_weights_list[0] == current_node]
+        if flag==1:
+         print(f"\nThese are the neighbors of node {current_node}: ", node_neighbors)
+
+        for neighbors in node_neighbors:
+            for neighbor in neighbors:
+                value_h = heuristic[neighbor[0]]
+                neighbors_with_h.append((neighbor[0], value_h))
+
+        if flag==1:
+            print(f"\nThis the the updated list (taking into account heuristic) of neighbors of node {current_node}: ",
+              neighbors_with_h)
+
+        neighbors_with_h = Approved_n(neighbors_with_h, tree)  # we make sure that
+        if flag==1:
+            print("\nThis is the list of approved neighbors (before): ", neighbors_with_h)
+
+        for neighbor in neighbors_with_h:
+            if neighbor in visited_tuples:
+                neighbors_with_h.remove(neighbor)
+        if flag==1:
+            print("\nThis is the list of approved neighbors (after): ", neighbors_with_h)
+
+        if len(neighbors_with_h) != 0:
+            # the following piece of code turns our hill climber algorithm into a stochastic hill climbing search
+            random_number = random.randint(0, len(neighbors_with_h) - 1)  # we obtain a random index
+            key_tup = neighbors_with_h.pop(random_number)
+            neighbors_with_h = [key_tup]
+            if flag==1:
+                print('\nThis is the neighbor to be explored:', neighbors_with_h)
+
+            for neighbor in neighbors_with_h:
+                if flag==1:
+                    print('\nCurrently exploring neighbor:', neighbor)
+                if neighbor[0] == goal:  # *
+                    branch.append(neighbor[0])
+
+                    end_time = time.time()
+                    tiempo=end_time-start_time
+                    return branch,tiempo
+
+                if neighbor[0] not in nodes_visited:
+                    updated_branch = branch.copy()
+                    if flag==1:
+                        print('\nThis is the updated branch: ', updated_branch)
+                    updated_branch.append(neighbor[0])
+                    if flag==1:
+                        print('\nThis is the updated branch, having appended the neighbor: ', updated_branch)
+                    branches.append(updated_branch)
+                    if flag==1:
+                        print('\nThis is branches: ', branches)
+        else:
+            key_node = branch.pop(-1)
+            key_tuple = (key_node, heuristic[key_node])
+            visited_tuples.append(key_tuple)
+            if flag==1:
+                print('\nThis is the key_tuple: ', key_tuple)
+            updated_branch = branch.copy()
+            if flag==1:
+                print('\nThis is branch after removing the faulty node: ', updated_branch)
+            branches.append(updated_branch)
+            if flag==1:
+                print('\nThis is branches: ', branches)
+
+###########################################################################################
 # Responsable: Jimena
 # Función: SIMULATED ANNEALING. Requiere de un grafo completamente conectado. A partir de una solución inicial, genera una nueva aleatoria. 
 # Calcula la diferencia de costos entre ambas soluciones y decide si aceptar o rechazar la nueva solución según la probabilidad de aceptación 
@@ -790,17 +958,17 @@ def simulated_annealing_result(initial_solution, initial_temperature, number_of_
         for i in range(number_of_iterations):
             # Genera una nueva solución aleatoria y calcula los costos de ésta y la inicial.
             new_random_solution = generate_random_swap_solution(current_solution)
-            
+
             if bandera==1:
                 print(f"\nLa nueva solución aleatoria es : {new_random_solution}")
 
             current_solution_cost = get_solution_cost(current_solution)
             new_random_solution_cost = get_solution_cost(new_random_solution)
-            
+
             if bandera==1:
                 print(f"\nEl costo de la solución actual es: {current_solution_cost}")
                 print(f"\nEl costo de la nueva solución es: {new_random_solution_cost}")
-            
+
             # Calcular la diferencia entre los costos de las soluciones.
             diferences_between_costs = current_solution_cost - new_random_solution_cost
 
@@ -862,8 +1030,8 @@ def main_sim_a():
 
     print_simulated_annealing_result(result, initial_solution)
 
-########################################################################################################################################
-#######FUNCIONES PRINCIPALES##########
+
+##########################################################################################################
 #Esta función es la encargada de pedirle al usuario la ciudad de incio y la ciudad objetivo. También realiza una 
 #validación para que las ciudades estén dentro de las ciudades permitidas.
 
@@ -942,19 +1110,20 @@ def menu(start,goal,bandera):
             print("\nSteepest  Hill Climbing: ")
             result5 = Steepest_Ascent_Hill_Climber(treecp, start, goal, Goal_hsh, bandera)
             print('\nThe path from {} to {} is {}\n'.format(start, goal, result5[0]))
-            print('\nThe Beam Search algorithm exuction time is {}\n'.format(result5[1]))
+            print('\nThe Steepest  Hill Climbing exuction time is {}\n'.format(result5[1]))
 
 
-         """""
         if opc==6:
-            print("\nSteepest Hill Climbing: ")
-            route = bidirectional_search(start, goal)
-            print(route)
-        """""
-        
+            print("\nStochastic Hill Climbing: ")
+            result6 = Steepest_Ascent_Hill_Climber(treecp, start, goal, Goal_hsh, bandera)
+            print('\nThe path from {} to {} is {}\n'.format(start, goal, result6[0]))
+            print('\nThe Stochastic Hill Climbing algorithm exuction time is {}\n'.format(result6[1]))
+
+
         if opc==7:
             print("\nSimulated annealing: ")
             main_sim_a()
+        
                   
         if opc == 8:
             print('\nMuchas gracias, hasta luego.')
@@ -963,4 +1132,4 @@ def menu(start,goal,bandera):
             print('Favor de seleccionar una opción válida.')
     
 
-main()   
+main() 

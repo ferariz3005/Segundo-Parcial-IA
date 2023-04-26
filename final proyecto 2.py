@@ -22,6 +22,7 @@ Ejecución del programa
 ####################################################################################################################################
 #Dependencias: 
 import math
+import random
 from math import radians, cos, sin, asin, sqrt
 import time 
 
@@ -116,7 +117,7 @@ treecp=[['CANCUN', [('VALLADOLID', 90), ('FELIPE CARRILLO PUERTO', 100)]], ['VAL
 
 ##### Funciones o Clases de Apoyo #####
 
-# Calcula la distancia euclideana entre dos ciudades por medio de las coordenas geograficas
+# Calcula la distancia de haversine entre dos ciudades por medio de las coordenas geograficas
 
 # Entrada:
     # origin = tupla que contiene la latitud y longitud de la ciudad de origen
@@ -169,13 +170,13 @@ def Haversine_heuristic(goal):
 
     return(haversine_heuristic)
 
-#Función: Sort Tuple, ordena una tupla de tuplas en base al segundo elemento de cada tupla, de manera ascendente.
+#Función: Sort Tuple, ordena una lista de tuplas en base al segundo elemento de cada tupla, de manera ascendente.
 
 #Entrada:
-    #tup: tupla que se desea ordenar
+    #tup: lista de tuplas que se desea ordenar
 
 #Salida:
-    #tup: tupla ordenada
+    #tup: lista ordenada 
 def Sort_Tuple(tup):
     tup.sort(key=lambda x: x[1])
     return tup
@@ -484,7 +485,7 @@ def beam_search(tree, start, goal, beam_width, heuristic,flag):
         if flag==1:
           print(f"\nThese are the neighbors of node {current_node}: ", node_neighbors)
 
-        for neighbor in node_neighbors[0]:  # itera en cada hijo
+        for neighbor in node_neighbors[0]:  # se itera en cada hijo para obtener una nueva lista de tuplas, con los correspondientes valores heurísticos de cada vecino y su nombre
             value_h = heuristic[neighbor[0]]
             neighbors_with_h.append((neighbor[0], value_h))
 
@@ -492,12 +493,12 @@ def beam_search(tree, start, goal, beam_width, heuristic,flag):
           print(f"\nThis the the updated list (taking into account heuristic) of neighbors of node {current_node}: ",
               neighbors_with_h)
 
-        sorted_neighbors = Sort_Tuple(neighbors_with_h)
+        sorted_neighbors = Sort_Tuple(neighbors_with_h) # llamamos a la función 'Sort_tuple' para ordenar la lista de vecinos ascendemente según el segundo valor de las tuplas
         
         if flag==1:
           print(f"\nThis is the sorted list of neighbors of node {current_node}: {sorted_neighbors}")
 
-        for neighbor in sorted_neighbors[0:beam_width]:  # *******
+        for neighbor in sorted_neighbors[0:beam_width]:  # Restringimos nuestra lista de vecinos al ancho del rayo
             if flag==1:
               print('\nCurrently exploring neighbor:', neighbor[0])
             if neighbor[0] == goal:
@@ -506,7 +507,7 @@ def beam_search(tree, start, goal, beam_width, heuristic,flag):
                 tiempo=end_time-start_time
                 return branch, tiempo
 
-            if neighbor[0] not in nodes_visited:
+            if neighbor[0] not in nodes_visited: #agregamos cada vecino al final de nuestras ramas o posibles caminos y las agregamos a la lista de todos los posibles caminos ('branches')
                 updated_branch = branch.copy()
                 if flag==1:
                   print('\nThis is the updated branch: ', updated_branch)
@@ -536,6 +537,8 @@ def beam_search(tree, start, goal, beam_width, heuristic,flag):
     # inicio a nuestra ciudad objetivo (si es que lo encontró) y el segundo el tiempo de ejecución del algoritmo
 
 def Steepest_Ascent_Hill_Climber(tree, start, goal, heuristic, flag):
+    
+    # Se almacenan en una lista todos aquellos nodos que no poseen hijos a fin de evitarlos en la búsqueda del camino a la ciudad destino
     banned_nodes = ['MERIDA', 'FRANCISCO ESCARCEGA', 'TEHUANTEPEC', 'TEHUACAN', 'IGUALA', 'TLAXCALA', 'VERACRUZ',
                 'ATLACOMULCO', 'MORELIA', 'ZACATECAS', 'SOTO LA MARINA', 'CIUDAD JUAREZ', 'SANTA ANA', 'CABO SAN LUCAS']
     start_time = time.time()
@@ -569,7 +572,8 @@ def Steepest_Ascent_Hill_Climber(tree, start, goal, heuristic, flag):
 
         current_h = heuristic[current_node]
 
-        for node_weights_list in tree:
+        for node_weights_list in tree: #comenzamos a iterar en nuestro árbol a fin de encontrar aquella lista que satisfaga que: su primer
+        # elemento sea igual al nodo actual. 
             if node_weights_list[0] == current_node:
                 if flag==1:
                   print(f'\nThese are the neighbors of node {current_node}: {node_weights_list[1]}')
@@ -583,21 +587,23 @@ def Steepest_Ascent_Hill_Climber(tree, start, goal, heuristic, flag):
                         if len(node_weights_list[1]) >= 1:
                             neighbor = node_weights_list[1].pop()
                          else:
-                            return "none since the last reached state has no more neighbors"
+                            return "none since the last reached state has no more neighbors" # si no podemos seleccionar otro hijo a explorar (dado que la lista está vacia),
+                            # entonces notificamos al usuario que no ha sido posible encontrar un camino al destino, pues el último nodo explorado no cuenta con hijos que nos permitan
+                            # alcanzar el nodo final.
                     if flag==1:
                       print(f'\nExploring neighbor: {neighbor}')
                     neighbor_h = heuristic[neighbor[0]]  # we get the neighbor's heuristic value
                     if flag==1:
                       print(
                         f'\nThis is heuristic value of node {neighbor[0]}: {neighbor_h} vs the current heuristic: {current_h}')
-                    if neighbor_h < current_h:
+                    if neighbor_h < current_h: # hacemos la comparación entre el valor de la heurística del vecino y la de nuestro nodo actual.
                         branch.append(neighbor[0])
                         if branch[-1] == goal:
                             end_time = time.time()
                             tiempo=end_time-start_time
                             return branch, tiempo
                         else:
-                            updated_branch = branch.copy()
+                            updated_branch = branch.copy() # Al haber obtenido un mejor valor de heurística, agregamos al vecino recientemente analizado a nuestro camino
                             if flag==1:
                               print('\nThis is the updated branch, since a new maximum heuristic value has been found:',
                                   updated_branch)

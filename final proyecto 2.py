@@ -1078,45 +1078,60 @@ def menu(start,goal,bandera):
         if opc==1:
             print("\nGreedy Best-First: ")
             result1 = primero_voraz(treecp, start, goal,Goal_hsh,bandera)
-            print('\nThe path from {} to {} is {}'.format(start, goal, result1[0]))
-            print('\nThe Greedy Best-First Search algorithm exuction time is {}\n'.format(result1[1]))
+            if result1:
+                print('\nThe path from {} to {} is {}'.format(start, goal, result1[0]))
+                print('\nThe Greedy Best-First Search algorithm exuction time is {}\n'.format(result1[1]))
+            else:
+                print('No path found.')
 
         if opc==2:
             print("\nA* Search:: ")
             result2 = A_search(treecp, start, goal,Goal_hsh,bandera)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result2[0]))
-            print('\nThe A* Search algorithm exuction time is {}\n'.format(result2[1]))
+            if result2:
+                print('\nThe path from {} to {} is {}\n'.format(start, goal, result2[0]))
+                print('\nThe A* Search algorithm exuction time is {}\n'.format(result2[1]))
+            else:
+                print('No path found.')
                 
         if opc==3:
             print("\nWeighted A* Search: ")
             result3 = weighted_A_search(treecp, start, goal,Goal_hsh,bandera)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result3[0]))
-            print('\nThe Weighted A* Search algorithm exuction time is {}\n'.format(result3[1]))
+            if result3:
+                print('\nThe path from {} to {} is {}\n'.format(start, goal, result3[0]))
+                print('\nThe Weighted A* Search algorithm exuction time is {}\n'.format(result3[1]))
+            else:
+                print('No path found.')
 
         if opc==4:
-            print("\nBeam Search:: ")
-
+            print("\nBeam Search: ")
+            beam_width=0
             while beam_width<=0:
                  beam_width=int(input("Ingrese la amplitud de rayo que desee usar: "))
 
             result4 = beam_search(treecp, start, goal, beam_width,Goal_hsh,bandera)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result4[0]))
-            print('\nThe Beam Search algorithm exuction time is {}\n'.format(result4[1]))
-
+            if result4:
+                print('\nThe path from {} to {} is {}\n'.format(start, goal, result4[0]))
+                print('\nThe Beam Search algorithm exuction time is {}\n'.format(result4[1]))
+            else:
+                print('No path found.')
 
         if opc==5:
             print("\nSteepest  Hill Climbing: ")
             result5 = Steepest_Ascent_Hill_Climber(treecp, start, goal, Goal_hsh, bandera)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result5[0]))
-            print('\nThe Steepest  Hill Climbing exuction time is {}\n'.format(result5[1]))
-
+            if result5:
+                print('\nThe path from {} to {} is {}\n'.format(start, goal, result5[0]))
+                print('\nThe Steepest  Hill Climbing exuction time is {}\n'.format(result5[1]))
+            else: 
+                print('No path found.')
 
         if opc==6:
             print("\nStochastic Hill Climbing: ")
             result6 = Steepest_Ascent_Hill_Climber(treecp, start, goal, Goal_hsh, bandera)
-            print('\nThe path from {} to {} is {}\n'.format(start, goal, result6[0]))
-            print('\nThe Stochastic Hill Climbing algorithm exuction time is {}\n'.format(result6[1]))
-
+            if result6:
+                print('\nThe path from {} to {} is {}\n'.format(start, goal, result6[0]))
+                print('\nThe Stochastic Hill Climbing algorithm exuction time is {}\n'.format(result6[1]))
+            else:
+                print('No path found.')
 
         if opc==7:
             print("\nSimulated annealing: ")
@@ -1126,8 +1141,8 @@ def menu(start,goal,bandera):
         if opc == 8:
             print('\nMuchas gracias, hasta luego.')
             break
-        else:
-            print('Favor de seleccionar una opción válida.')
-    
+        
+    else: 
+        print('Favor de seleccionar una opción válida.')
 
 main() 

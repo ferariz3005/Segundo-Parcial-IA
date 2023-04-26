@@ -580,8 +580,10 @@ def Steepest_Ascent_Hill_Climber(tree, start, goal, heuristic, flag):
                     neighbor = node_weights_list[1].pop()  # we opt to select the neighbor at the end
                     if neighbor[0] in banned_nodes: # if our initial choice of neighbor happens to be in the list of
                         # banned cities, we pick another one (if available)
-                        neighbor = node_weights_list[1].pop()
-                    
+                        if len(node_weights_list[1]) >= 1:
+                            neighbor = node_weights_list[1].pop()
+                         else:
+                            return "none since the last reached state has no more neighbors"
                     if flag==1:
                       print(f'\nExploring neighbor: {neighbor}')
                     neighbor_h = heuristic[neighbor[0]]  # we get the neighbor's heuristic value

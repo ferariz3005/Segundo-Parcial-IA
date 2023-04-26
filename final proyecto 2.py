@@ -14,7 +14,7 @@ En este código, se realizará la implementación de los algoritmos de búsqueda
 vistos en clase haciendo uso del grafo de las ciudades de México y la heurística
 Haversine. 
 
-Ejecucion del programa
+Ejecución del programa
     Opcion 1) En una terminal que sobre el directorio donde radica este archivo escribir:
                     python get_euclidean_distance.py
     Opcion 2) Abrir el archivo con un editor de codigo y presionar el boton ejecutar
